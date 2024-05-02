@@ -6,22 +6,31 @@ import './App.css';
 interface Item {
   category: string;
   fcstValue: string;
+  fcstTime: string;
   // 다른 속성들도 있을 수 있음
 }
 
 function App() {
   const [dustGrade, setDustGrade] = useState('');
-  const [shortWeatherData, setShortWeatherData] = useState({
-    한시간기온: [],
-    하늘상태: [],
-    강수형태: [],
-    강수확률: [],
-    한시간강수량: [],
-    습도: [],
-    눈쌓임: [],
+  const [shortForecastData, setShortForecastData] = useState<SetStateAction<object>>({
+    예보시각: '',
+    한시간기온: '',
+    하늘상태: '',
+    강수형태: '',
+    강수확률: '',
+    한시간강수량: '',
+    습도: '',
+    눈쌓임: '',
   });
 
-  const [weatherDeg, setWeatherDeg] = useState<SetStateAction<string[]>>([]);
+  const [forecastTime, setForecastTime] = useState<SetStateAction<Array<string> | any>>([]);
+  const [weatherDegArr, setWeatherDegArr] = useState<SetStateAction<Array<string> | any>>([]);
+  const [skyCondition, setSkyCondition] = useState<SetStateAction<Array<string> | any>>([]);
+  const [precipitationType, setPrecipitationType] = useState<SetStateAction<Array<string> | any>>([]);
+  const [precipitationProbability, setPrecipitationProbability] = useState<SetStateAction<Array<string> | any>>([]);
+  const [onehourPrecipitation, setOnehourPrecipitation] = useState<SetStateAction<Array<string> | any>>([]);
+  const [humidity, setHumidity] = useState<SetStateAction<Array<string> | any>>([]);
+  const [snowCover, setSnowCover] = useState<SetStateAction<Array<string> | any>>([]);
 
   useEffect(() => {
     async function getDustGrade() {
@@ -36,22 +45,26 @@ function App() {
       console.log('resssss', res.data.response.body.items);
 
       const ddd = {
-        한시간기온: res.data.response.body.items.item.filter((v: Item) => v.category == 'TMP'),
-        하늘상태: res.data.response.body.items.item.filter((v: Item) => v.category == 'SKY'),
-        강수형태: res.data.response.body.items.item.filter((v: Item) => v.category == 'PTY'),
-        강수확률: res.data.response.body.items.item.filter((v: Item) => v.category == 'POP'),
-        한시간강수량: res.data.response.body.items.item.filter((v: Item) => v.category == 'PCP'),
-        습도: res.data.response.body.items.item.filter((v: Item) => v.category == 'REH'),
-        눈쌓임: res.data.response.body.items.item.filter((v: Item) => v.category == 'SNO'),
+        예보시각: setForecastTime(res.data.response.body.items.item.filter((v: Item) => v.fcstTime).map((d: Item) => d.fcstValue)),
+        한시간기온: setWeatherDegArr(res.data.response.body.items.item.filter((v: Item) => v.category == 'TMP').map((d: Item) => d.fcstValue)),
+        하늘상태: setSkyCondition(res.data.response.body.items.item.filter((v: Item) => v.category == 'SKY').map((d: Item) => d.fcstValue)),
+        강수형태: setPrecipitationType(res.data.response.body.items.item.filter((v: Item) => v.category == 'PTY').map((d: Item) => d.fcstValue)),
+        강수확률: setPrecipitationProbability(res.data.response.body.items.item.filter((v: Item) => v.category == 'POP').map((d: Item) => d.fcstValue)),
+        한시간강수량: setOnehourPrecipitation(res.data.response.body.items.item.filter((v: Item) => v.category == 'PCP').map((d: Item) => d.fcstValue)),
+        습도: setHumidity(res.data.response.body.items.item.filter((v: Item) => v.category == 'REH').map((d: Item) => d.fcstValue)),
+        눈쌓임: setSnowCover(res.data.response.body.items.item.filter((v: Item) => v.category == 'SNO').map((d: Item) => d.fcstValue)),
       };
 
-      setShortWeatherData(ddd);
+      setShortForecastData(ddd);
     }
     getShortWeatherData();
-
-    setWeatherDeg(shortWeatherData['한시간기온'].map((d: Item) => d.fcstValue));
   }, []);
-  console.log('ㄹㄴㄹㄹㄴ', weatherDeg);
+
+  // useEffect(() => {
+  //   if (shortForecastData) {
+  //     setWeatherDegArr(shortForecastData['한시간기온'].map((d: Item) => d.fcstValue));
+  //   }
+  // }, [shortForecastData]);
 
   return (
     <>
@@ -69,7 +82,11 @@ function App() {
         </div>
       )}
 
-      {shortWeatherData && weatherDeg}
+      <div>
+        {weatherDegArr.map((d: string, i: number) => (
+          <p key={i}>현재 기온 : {d}</p>
+        ))}
+      </div>
     </>
   );
 }
