@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getFineDust, getShortForecast } from './api';
 
 import './App.css';
