@@ -24,9 +24,11 @@ console.log('month', today.getMonth() + 1);
 console.log('day', today.getDate());
 console.log('포맷후', formattedDate);
 
-const hours = String(today.getHours()).padStart(2, '0');
+const numHours = today.getHours();
+const n = numHours % 3 == 0 ? 1 : numHours % 3 == 1 ? 2 : numHours % 3 == 2 ? 0 : 0;
+const hours = String(today.getHours() - n).padStart(2, '0');
 
-console.log('지금 시간', today.getMinutes());
+console.log('지금 시간', n, hours, today.getHours());
 
 export const getShortForecast = async () =>
   await axios.get(
