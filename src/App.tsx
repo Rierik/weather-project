@@ -13,7 +13,8 @@ interface Item {
 function App() {
   const [dustGrade, setDustGrade] = useState('');
 
-  const [forecastTime, setForecastTime] = useState<SetStateAction<Array<string> | any>>([]);
+  //setstationAction을 쓰는것이 best practice는 아니라고 하는데 상태 값을 업데이트하는 함수의 형식을 정의하는 데 사용된다.
+  const [forecastTime, setForecastTime] = useState<Array<string>>([]);
   const [weatherDegArr, setWeatherDegArr] = useState<SetStateAction<Array<string> | any>>([]);
   const [skyCondition, setSkyCondition] = useState<SetStateAction<Array<string> | any>>([]);
   const [precipitationType, setPrecipitationType] = useState<SetStateAction<Array<string> | any>>([]);
@@ -34,7 +35,12 @@ function App() {
       const res = await getShortForecast();
       console.log('resssss', res.data.response.body.items);
 
-      setForecastTime([...new Set(res.data.response.body.items.item.map((v: Item) => v.fcstTime))]);
+      //... 스프레드연산자 때문에  new Set의 배열안의 타입을 정확하게 지정해 주지 않아서 에러가 났음
+      setForecastTime([...new Set<string>(res.data.response.body.items.item.map((v: Item) => v.fcstTime))]);
+      console.log(
+        typeof [...new Set(res.data.response.body.items.item.map((v: Item) => v.fcstTime))],
+        typeof Array.from(new Set(res.data.response.body.items.item.map((v: Item) => v.fcstTime))),
+      );
       setWeatherDegArr(res.data.response.body.items.item.filter((v: Item) => v.category == 'TMP').map((d: Item) => d.fcstValue));
       setSkyCondition(res.data.response.body.items.item.filter((v: Item) => v.category == 'SKY').map((d: Item) => d.fcstValue));
       setPrecipitationType(res.data.response.body.items.item.filter((v: Item) => v.category == 'PTY').map((d: Item) => d.fcstValue));
@@ -75,7 +81,7 @@ function App() {
       ))}
       <div>
         {weatherDegArr.map((d: string, i: number) => (
-          <p key={i}>현재 기온 : {d}</p>
+          <p key={i}>기온 : {d}</p>
         ))}
       </div>
       {precipitationType.map((t: string, i: number) => (
