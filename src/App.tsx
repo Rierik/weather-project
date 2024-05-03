@@ -15,13 +15,13 @@ function App() {
 
   //setstationAction을 쓰는것이 best practice는 아니라고 하는데 상태 값을 업데이트하는 함수의 형식을 정의하는 데 사용된다.
   const [forecastTime, setForecastTime] = useState<Array<string>>([]);
-  const [weatherDegArr, setWeatherDegArr] = useState<SetStateAction<Array<string> | any>>([]);
-  const [skyCondition, setSkyCondition] = useState<SetStateAction<Array<string> | any>>([]);
-  const [precipitationType, setPrecipitationType] = useState<SetStateAction<Array<string> | any>>([]);
-  const [precipitationProbability, setPrecipitationProbability] = useState<SetStateAction<Array<string> | any>>([]);
-  const [onehourPrecipitation, setOnehourPrecipitation] = useState<SetStateAction<Array<string> | any>>([]);
-  const [humidity, setHumidity] = useState<SetStateAction<Array<string> | any>>([]);
-  const [snowCover, setSnowCover] = useState<SetStateAction<Array<string> | any>>([]);
+  const [weatherDegArr, setWeatherDegArr] = useState<Array<string>>([]);
+  const [skyCondition, setSkyCondition] = useState<Array<string>>([]);
+  const [precipitationType, setPrecipitationType] = useState<Array<string>>([]);
+  const [precipitationProbability, setPrecipitationProbability] = useState<Array<string>>([]);
+  const [onehourPrecipitation, setOnehourPrecipitation] = useState<Array<string>>([]);
+  const [humidity, setHumidity] = useState<Array<string>>([]);
+  const [snowCover, setSnowCover] = useState<Array<string>>([]);
 
   useEffect(() => {
     async function getDustGrade() {
@@ -37,10 +37,7 @@ function App() {
 
       //... 스프레드연산자 때문에  new Set의 배열안의 타입을 정확하게 지정해 주지 않아서 에러가 났음
       setForecastTime([...new Set<string>(res.data.response.body.items.item.map((v: Item) => v.fcstTime))]);
-      console.log(
-        typeof [...new Set(res.data.response.body.items.item.map((v: Item) => v.fcstTime))],
-        typeof Array.from(new Set(res.data.response.body.items.item.map((v: Item) => v.fcstTime))),
-      );
+
       setWeatherDegArr(res.data.response.body.items.item.filter((v: Item) => v.category == 'TMP').map((d: Item) => d.fcstValue));
       setSkyCondition(res.data.response.body.items.item.filter((v: Item) => v.category == 'SKY').map((d: Item) => d.fcstValue));
       setPrecipitationType(res.data.response.body.items.item.filter((v: Item) => v.category == 'PTY').map((d: Item) => d.fcstValue));
