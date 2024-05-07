@@ -11,6 +11,11 @@ interface Item {
   // 다른 속성들도 있을 수 있음
 }
 
+const CaptionTitle = styled.caption`
+  font-size: 1.2rem;
+  margin: 20px auto 40px auto;
+`;
+
 const TimeTile = styled.th`
   width: 50px;
   text-align: center;
@@ -45,56 +50,30 @@ const IconMapper = styled.div`
   align-items: center;
 `;
 
-const Sunny = styled.i`
+const WeatherIcon = styled.i`
   text-align: center;
-
   width: 30px;
   height: 30px;
   display: block;
   background-image: url(https://ssl.pstatic.net/static/weather/image/sp_icon_weather_346e83fd.png);
   -webkit-background-size: 210px 180px;
   background-size: 210px 180px;
+`;
+
+const Sunny = styled(WeatherIcon)`
   background-position: 0 0;
-  background-repeat: no-repeat;
 `;
 
-const LittleCloud = styled.i`
-  text-align: center;
-
-  width: 30px;
-  height: 30px;
-  display: block;
-  background-image: url(https://ssl.pstatic.net/static/weather/image/sp_icon_weather_346e83fd.png);
-  -webkit-background-size: 210px 180px;
-  background-size: 210px 180px;
+const LittleCloud = styled(WeatherIcon)`
   background-position: 100% 20%;
-  background-repeat: no-repeat;
 `;
 
-const PartlyCloudy = styled.i`
-  text-align: center;
-
-  width: 30px;
-  height: 30px;
-  display: block;
-  background-image: url(https://ssl.pstatic.net/static/weather/image/sp_icon_weather_346e83fd.png);
-  -webkit-background-size: 210px 180px;
-  background-size: 210px 180px;
+const PartlyCloudy = styled(WeatherIcon)`
   background-position: 100% 60%;
-  background-repeat: no-repeat;
 `;
 
-const Cloudy = styled.i`
-  text-align: center;
-
-  width: 30px;
-  height: 30px;
-  display: block;
-  background-image: url(https://ssl.pstatic.net/static/weather/image/sp_icon_weather_346e83fd.png);
-  -webkit-background-size: 210px 180px;
-  background-size: 210px 180px;
+const Cloudy = styled(WeatherIcon)`
   background-position: 100% 40%;
-  background-repeat: no-repeat;
 `;
 
 const Td = styled.td`
@@ -149,21 +128,21 @@ function App() {
   return (
     <>
       <table>
-        <caption>
+        <CaptionTitle>
           {dustGrade && (
             <div>
               {dustGrade == '1'
-                ? '미세먼지가 좋음 입니다 :)'
+                ? '미세먼지가 좋음입니다 :)'
                 : dustGrade == '2'
-                ? '미세먼지가 보통 입니다 :@'
+                ? '미세먼지가 보통입니다 :@'
                 : dustGrade == '3'
                 ? '미세먼지가 나쁨입니다 :('
                 : dustGrade == '4'
-                ? '미세먼지가 매우 나쁨입니다. 마스크를 착용하세요 :<'
+                ? '미세먼지가 매우나쁨입니다. 마스크를 착용하세요 :<'
                 : null}
             </div>
           )}
-        </caption>
+        </CaptionTitle>
 
         <>
           <tr>
@@ -184,10 +163,6 @@ function App() {
                 </IconMapper>
               </Td>
             ))}
-          </tr>
-
-          <tr>
-            <TableTitle></TableTitle>
           </tr>
 
           <tr>
