@@ -32,7 +32,7 @@ console.log('지금 시간', n, hours, today.getHours());
 
 export const getShortForecast = async () =>
   await axios.get(
-    `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?base_date=${formattedDate}&base_time=${hours}00&nx=61&ny=125&pageNo=1&numOfRows=61&dataType=json&serviceKey=${
+    `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?base_date=${formattedDate}&base_time=${hours}00&nx=61&ny=125&pageNo=1&numOfRows=60&dataType=json&serviceKey=${
       import.meta.env.VITE_SERVICE_KEY
     }`,
   );
