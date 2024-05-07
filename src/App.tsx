@@ -144,7 +144,7 @@ function App() {
           )}
         </CaptionTitle>
 
-        <>
+        <tbody>
           <tr>
             <th>
               <Today>오늘</Today>
@@ -192,7 +192,7 @@ function App() {
               <Td key={i}>{t}</Td>
             ))}
           </tr>
-        </>
+        </tbody>
       </table>
       {/* {precipitationType.map((t: string, i: number) => (
         <div key={i}>강수형태 : {t == '1' ? '비' : t == '2' ? '비/눈' : t == '3' ? '눈' : t == '4' ? '소나기' : '비 소식 없음'}</div>
