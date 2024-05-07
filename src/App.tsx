@@ -11,33 +11,43 @@ interface Item {
   // 다른 속성들도 있을 수 있음
 }
 
-const DateBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 500px;
-  margin: 30px auto;
+const TimeTile = styled.th`
+  width: 50px;
+  text-align: center;
 `;
 
-const Today = styled.tr`
-  width: 45px;
-  height: 30px;
+const Today = styled.p`
+  width: 55px;
+  height: 28px;
   background-color: #000;
   color: #fff;
   text-align: center;
-  line-height: 30px;
+  line-height: 28px;
   border-radius: 15px;
   font-weight: bold;
+  font-size: 14px;
 `;
 
-const IconMapper = styled.td`
-  width: 30px;
+const TableTitle = styled.th`
+  width: 100px;
+  text-align: left;
+  padding-left: 5px;
+`;
+
+const IconMapper = styled.div`
+  margin-top: 50px;
+
+  width: 50px;
   height: 30px;
 
-  display: block;
-  margin: 2px auto 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Sunny = styled.i`
+  text-align: center;
+
   width: 30px;
   height: 30px;
   display: block;
@@ -49,6 +59,8 @@ const Sunny = styled.i`
 `;
 
 const LittleCloud = styled.i`
+  text-align: center;
+
   width: 30px;
   height: 30px;
   display: block;
@@ -60,6 +72,8 @@ const LittleCloud = styled.i`
 `;
 
 const PartlyCloudy = styled.i`
+  text-align: center;
+
   width: 30px;
   height: 30px;
   display: block;
@@ -71,6 +85,8 @@ const PartlyCloudy = styled.i`
 `;
 
 const Cloudy = styled.i`
+  text-align: center;
+
   width: 30px;
   height: 30px;
   display: block;
@@ -81,8 +97,8 @@ const Cloudy = styled.i`
   background-repeat: no-repeat;
 `;
 
-const Temperatures = styled.li`
-  margin-top: 50px;
+const Td = styled.td`
+  text-align: center;
 `;
 
 function App() {
@@ -150,52 +166,55 @@ function App() {
         </caption>
 
         <>
-          <Today>
-            <th>오늘</th>
+          <tr>
+            <th>
+              <Today>오늘</Today>
+            </th>
             {forecastTime.map((t: string, i: number) => (
-              <th key={i}>{t}시</th>
-            ))}
-          </Today>
-
-          <tr>
-            <th></th>
-            {skyCondition.map((t: string, i: number) => (
-              <td key={i}>{t == '1' ? <Sunny /> : t == '2' ? <LittleCloud /> : t == '3' ? <Cloudy /> : <PartlyCloudy />}</td>
+              <TimeTile key={i}>{t}시</TimeTile>
             ))}
           </tr>
 
           <tr>
-            <th></th>
+            <TableTitle></TableTitle>
             {skyCondition.map((t: string, i: number) => (
-              <td key={i}>{t == '1' ? '맑음' : t == '2' ? '구름조금' : t == '3' ? '구름많음' : '흐림'}</td>
+              <Td key={i}>
+                <IconMapper title={skyCondition[i] == '1' ? '맑음' : skyCondition[i] == '2' ? '구름조금' : skyCondition[i] == '3' ? '구름많음' : '흐림'}>
+                  {t == '1' ? <Sunny /> : t == '2' ? <LittleCloud /> : t == '3' ? <Cloudy /> : <PartlyCloudy />}
+                </IconMapper>
+              </Td>
             ))}
           </tr>
 
           <tr>
-            <th>기온</th>
+            <TableTitle></TableTitle>
+          </tr>
+
+          <tr>
+            <TableTitle>기온</TableTitle>
             {weatherDegArr.map((t: string, i: number) => (
-              <td key={i}>{t}°C</td>
+              <Td key={i}>{t}°C</Td>
             ))}
           </tr>
 
           <tr>
-            <th>강수확률</th>
+            <TableTitle>강수확률</TableTitle>
             {precipitationProbability.map((t: string, i: number) => (
-              <td key={i}>{t}%</td>
+              <Td key={i}>{t}%</Td>
             ))}
           </tr>
 
           <tr>
-            <th>강수량</th>
+            <TableTitle>강수량</TableTitle>
             {onehourPrecipitation.map((t: string, i: number) => (
-              <td key={i}>{t}</td>
+              <Td key={i}>{t == '강수없음' ? 0 : t}</Td>
             ))}
           </tr>
 
           <tr>
-            <th>습도</th>
+            <TableTitle>습도</TableTitle>
             {humidity.map((t: string, i: number) => (
-              <td key={i}>{t}</td>
+              <Td key={i}>{t}</Td>
             ))}
           </tr>
         </>
