@@ -11,6 +11,43 @@ interface Item {
   // 다른 속성들도 있을 수 있음
 }
 
+const Table = styled.table`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 500px;
+`;
+
+const FineDust = styled.span`
+  display: inline-block;
+  width: 65px;
+  height: 32px;
+  line-height: 30px;
+  border-radius: 13px;
+`;
+
+const GoodDust = styled(FineDust)`
+  background-color: rgba(52, 160, 255, 0.2);
+  color: #34a0ff;
+`;
+
+const CommonlyDust = styled(FineDust)`
+  background-color: rgba(0, 199, 60, 0.2);
+  color: #00c73c;
+`;
+
+const BadDust = styled(FineDust)`
+  background-color: rgba(253, 165, 14, 0.2);
+  color: #fda50e;
+`;
+const VeryBadDust = styled(FineDust)`
+  background-color: rgba(205, 53, 52, 0.2);
+  color: #cd3534;
+`;
+
 const CaptionTitle = styled.caption`
   font-size: 1.2rem;
   margin: 20px auto 40px auto;
@@ -40,7 +77,7 @@ const TableTitle = styled.th`
 `;
 
 const IconMapper = styled.div`
-  margin-top: 50px;
+  margin-top: 10px;
 
   width: 50px;
   height: 30px;
@@ -74,6 +111,10 @@ const PartlyCloudy = styled(WeatherIcon)`
 
 const Cloudy = styled(WeatherIcon)`
   background-position: 100% 40%;
+`;
+
+const Tr = styled.tr`
+  margin: 20px 0;
 `;
 
 const Td = styled.td`
@@ -127,34 +168,44 @@ function App() {
 
   return (
     <>
-      <table>
+      <Table>
         <CaptionTitle>
           {dustGrade && (
-            <div>
-              {dustGrade == '1'
-                ? '미세먼지가 좋음입니다 :)'
-                : dustGrade == '2'
-                ? '미세먼지가 보통입니다 :@'
-                : dustGrade == '3'
-                ? '미세먼지가 나쁨입니다 :('
-                : dustGrade == '4'
-                ? '미세먼지가 매우나쁨입니다. 마스크를 착용하세요 :<'
-                : null}
-            </div>
+            <>
+              {dustGrade == '1' ? (
+                <span>
+                  미세먼지가 <GoodDust>좋음</GoodDust> 입니다 : &#41;
+                </span>
+              ) : dustGrade == '2' ? (
+                <span>
+                  미세먼지가 <CommonlyDust>보통</CommonlyDust> 입니다 :~
+                </span>
+              ) : dustGrade == '3' ? (
+                <span>
+                  미세먼지가 <BadDust>나쁨</BadDust> 입니다 : &#40;
+                </span>
+              ) : dustGrade == '4' ? (
+                <span>
+                  미세먼지가 <VeryBadDust>매우나쁨</VeryBadDust> 입니다 마스크를 착용하세요 : &lt;
+                </span>
+              ) : null}
+            </>
           )}
         </CaptionTitle>
 
+        <strong>{weatherDegArr[0]}°C</strong>
+
         <tbody>
-          <tr>
+          <Tr>
             <th>
               <Today>오늘</Today>
             </th>
             {forecastTime.map((t: string, i: number) => (
               <TimeTile key={i}>{t}시</TimeTile>
             ))}
-          </tr>
+          </Tr>
 
-          <tr>
+          <Tr>
             <TableTitle></TableTitle>
             {skyCondition.map((t: string, i: number) => (
               <Td key={i}>
@@ -163,37 +214,37 @@ function App() {
                 </IconMapper>
               </Td>
             ))}
-          </tr>
+          </Tr>
 
-          <tr>
+          <Tr>
             <TableTitle>기온</TableTitle>
             {weatherDegArr.map((t: string, i: number) => (
               <Td key={i}>{t}°C</Td>
             ))}
-          </tr>
+          </Tr>
 
-          <tr>
-            <TableTitle>강수확률</TableTitle>
+          <Tr>
+            <TableTitle>강수확률(%)</TableTitle>
             {precipitationProbability.map((t: string, i: number) => (
-              <Td key={i}>{t}%</Td>
+              <Td key={i}>{t}</Td>
             ))}
-          </tr>
+          </Tr>
 
-          <tr>
-            <TableTitle>강수량</TableTitle>
+          <Tr>
+            <TableTitle>강수량(mm)</TableTitle>
             {onehourPrecipitation.map((t: string, i: number) => (
               <Td key={i}>{t == '강수없음' ? 0 : t}</Td>
             ))}
-          </tr>
+          </Tr>
 
-          <tr>
-            <TableTitle>습도</TableTitle>
+          <Tr>
+            <TableTitle>습도(%)</TableTitle>
             {humidity.map((t: string, i: number) => (
               <Td key={i}>{t}</Td>
             ))}
-          </tr>
+          </Tr>
         </tbody>
-      </table>
+      </Table>
       {/* {precipitationType.map((t: string, i: number) => (
         <div key={i}>강수형태 : {t == '1' ? '비' : t == '2' ? '비/눈' : t == '3' ? '눈' : t == '4' ? '소나기' : '비 소식 없음'}</div>
       ))}
