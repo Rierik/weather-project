@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getFineDust, getShortForecast } from './api';
+import { getFineDust, forecastRes } from './api';
 import styled from 'styled-components';
 
 import './App.css';
@@ -121,6 +121,21 @@ const Td = styled.td`
   text-align: center;
 `;
 
+const CurrentDegree = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  /* Parent 내의 Child 스타일 */
+  ${IconMapper} {
+    /* 새로운 Child 스타일 */
+    margin-top: 0;
+    margin: 4px;
+    transform: scale(2.5);
+  }
+`;
+
 function App() {
   const [dustGrade, setDustGrade] = useState<string>('');
 
@@ -143,7 +158,8 @@ function App() {
     getDustGrade();
 
     async function getShortWeatherData() {
-      const res = await getShortForecast();
+      // const res = await getShortForecast();
+      const res = forecastRes;
       console.log('resssss', res.data.response.body.items);
 
       //... 스프레드연산자 때문에  new Set의 배열안의 타입을 정확하게 지정해 주지 않아서 에러가 났음
@@ -193,7 +209,12 @@ function App() {
           )}
         </CaptionTitle>
 
-        <strong>{weatherDegArr[0]}°C</strong>
+        <CurrentDegree>
+          <IconMapper title={skyCondition[0] == '1' ? '맑음' : skyCondition[0] == '2' ? '구름조금' : skyCondition[0] == '3' ? '구름많음' : '흐림'}>
+            {skyCondition[0] == '1' ? <Sunny /> : skyCondition[0] == '2' ? <LittleCloud /> : skyCondition[0] == '3' ? <Cloudy /> : <PartlyCloudy />}
+          </IconMapper>
+          {weatherDegArr[0]}°C
+        </CurrentDegree>
 
         <tbody>
           <Tr>
