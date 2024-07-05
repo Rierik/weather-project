@@ -30,12 +30,20 @@ const hours = String(today.getHours() - n).padStart(2, '0');
 
 console.log('지금 시간', n, hours, today.getHours());
 
+const defaultDataNum = 60;
+const changeDataNum = n == 0 ? defaultDataNum : n == 1 ? defaultDataNum + 12 : n == 2 ? defaultDataNum + 24 : defaultDataNum;
+
 export const getShortForecast = async () =>
   await axios.get(
-    `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?base_date=${formattedDate}&base_time=${hours}00&nx=61&ny=125&pageNo=1&numOfRows=60&dataType=json&serviceKey=${
+    `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?base_date=${formattedDate}&base_time=${hours}00&nx=61&ny=125&pageNo=1&numOfRows=${changeDataNum}&dataType=json&serviceKey=${
       import.meta.env.VITE_SERVICE_KEY
     }`,
   );
+
+export const forecastRes = await getShortForecast();
+const formatForestRes = forecastRes.data.response.body.items.item.splice(0, n);
+
+console.log(forecastRes, formatForestRes);
 
 // // POST
 // export async function postUser() {
